@@ -14,6 +14,7 @@ pub struct FactoryStorage {
     pub paused: bool,
     pub fee_to: Option<Address>,
     pub fee_to_setter: Address,
+    pub fee_bps: u32,
 }
 
 #[contracttype]
@@ -22,6 +23,15 @@ pub enum DataKey {
     Factory,
     Pair(Address, Address),
     PendingUpgrade,
+    PairList,
+}
+
+pub fn get_pair_list(env: &Env) -> Vec<Address> {
+    env.storage().instance().get(&DataKey::PairList).unwrap_or(Vec::new(env))
+}
+
+pub fn set_pair_list(env: &Env, list: &Vec<Address>) {
+    env.storage().instance().set(&DataKey::PairList, list);
 }
 
 #[contracttype]

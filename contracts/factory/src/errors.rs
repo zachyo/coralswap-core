@@ -16,4 +16,7 @@ pub enum FactoryError {
     Unauthorized = 10,
     UpgradeAlreadyPending = 11,
     NoPendingUpgrade = 12,
+    LimitTooHigh = 13,
+    FeeTooHigh = 14,
+    InvalidFeeRecipient = 15,
 }

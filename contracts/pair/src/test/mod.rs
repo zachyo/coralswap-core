@@ -22,6 +22,7 @@ mod events;
 // mod flash_loan; // Temporarily disabled - flash_loan not yet exposed in contract
 mod initialize;
 mod mint;
+mod oracle;
 mod reentrancy;
 mod swap_math;
 mod sync;

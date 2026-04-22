@@ -60,6 +60,7 @@ impl Factory {
             paused: false,
             fee_to: None,
             fee_to_setter,
+            fee_bps: 0,
         };
 
         storage::set_factory_storage(&env, &factory_storage);
@@ -116,7 +117,7 @@ impl Factory {
 
         // 3. Initialize Pair — propagate any error; do NOT store if this fails
         let pair_client = PairClient::new(&env, &pair_address);
-        pair_client
+        let _ = pair_client
             .try_initialize(
                 &env.current_contract_address(),
                 &token_0,
@@ -133,6 +134,10 @@ impl Factory {
         factory_storage.pair_count += 1;
         storage::set_factory_storage(&env, &factory_storage);
 
+        let mut pair_list = storage::get_pair_list(&env);
+        pair_list.push_back(pair_address.clone());
+        storage::set_pair_list(&env, &pair_list);
+
         // 5. Emit event
         events::FactoryEvents::pair_created(&env, &token_0, &token_1, &pair_address, pair_index);
 
@@ -141,6 +146,29 @@ impl Factory {
 
     pub fn get_pair(env: Env, token_a: Address, token_b: Address) -> Option<Address> {
         storage::get_pair(&env, token_a, token_b)
+    }
+
+    pub fn get_all_pairs(env: Env, offset: u32, limit: u32) -> Result<Vec<Address>, FactoryError> {
+        if limit > 50 {
+            return Err(FactoryError::LimitTooHigh);
+        }
+        let pair_list = storage::get_pair_list(&env);
+        let mut result = Vec::new(&env);
+        let total = pair_list.len();
+        
+        let start = offset;
+        let end = (offset + limit).min(total);
+        if start < total {
+            for i in start..end {
+                result.push_back(pair_list.get(i).unwrap());
+            }
+        }
+        Ok(result)
+    }
+
+    pub fn get_pair_count(env: Env) -> u32 {
+        let storage = storage::get_factory_storage(&env);
+        storage.map(|s| s.pair_count).unwrap_or(0)
     }
 
     pub fn pause(env: Env, signers: Vec<Address>) -> Result<(), FactoryError> {
@@ -196,6 +224,7 @@ impl Factory {
         env: Env,
         setter: Address,
         fee_to: Option<Address>,
+        fee_bps: u32,
     ) -> Result<(), FactoryError> {
         let mut storage = storage::get_factory_storage(&env).ok_or(FactoryError::NotInitialized)?;
 
@@ -205,10 +234,21 @@ impl Factory {
             return Err(FactoryError::Unauthorized);
         }
 
+        if fee_bps > 30 {
+            return Err(FactoryError::FeeTooHigh);
+        }
+
+        if fee_to.is_none() && fee_bps > 0 {
+            return Err(FactoryError::InvalidFeeRecipient);
+        }
+
+        let old_fee_bps = storage.fee_bps;
         storage.fee_to = fee_to.clone();
+        storage.fee_bps = fee_bps;
         storage::set_factory_storage(&env, &storage);
 
         events::FactoryEvents::fee_to_set(&env, &fee_to);
+        events::FactoryEvents::protocol_fee_updated(&env, old_fee_bps, fee_bps, &fee_to);
 
         Ok(())
     }
