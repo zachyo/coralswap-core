@@ -243,6 +243,11 @@ impl Pair {
         Ok((state.reserve_a, state.reserve_b, state.block_timestamp_last))
     }
 
+    /// Consults the oracle for a TWAP over a given window.
+    pub fn consult_twap(env: Env, window_ledgers: u32) -> Result<(i128, i128), errors::OracleError> {
+        oracle::consult_twap(&env, window_ledgers)
+    }
+
     /// Returns the LP token address.
     pub fn lp_token(env: Env) -> Result<Address, PairError> {
         let state = get_pair_state(&env).ok_or(PairError::NotInitialized)?;

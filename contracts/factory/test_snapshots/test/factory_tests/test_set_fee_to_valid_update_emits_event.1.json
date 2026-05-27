@@ -1,11 +1,35 @@
 {
   "generators": {
-    "address": 7,
+    "address": 8,
     "nonce": 0
   },
   "auth": [
     [],
-    [],
+    [
+      [
+        "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM",
+        {
+          "function": {
+            "contract_fn": {
+              "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+              "function_name": "set_fee_to",
+              "args": [
+                {
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
+                },
+                {
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
+                },
+                {
+                  "u32": 20
+                }
+              ]
+            }
+          },
+          "sub_invocations": []
+        }
+      ]
+    ],
     []
   ],
   "ledger": {
@@ -56,14 +80,16 @@
                                 "symbol": "fee_bps"
                               },
                               "val": {
-                                "u32": 0
+                                "u32": 20
                               }
                             },
                             {
                               "key": {
                                 "symbol": "fee_to"
                               },
-                              "val": "void"
+                              "val": {
+                                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
+                              }
                             },
                             {
                               "key": {
@@ -86,7 +112,7 @@
                                 "symbol": "pair_count"
                               },
                               "val": {
-                                "u32": 1
+                                "u32": 0
                               }
                             },
                             {
@@ -133,58 +159,6 @@
                             }
                           ]
                         }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "Pair"
-                            },
-                            {
-                              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-                            },
-                            {
-                              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "Pair"
-                            },
-                            {
-                              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
-                            },
-                            {
-                              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "PairList"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "vec": [
-                            {
-                              "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
-                            }
-                          ]
-                        }
                       }
                     ]
                   }
@@ -199,9 +173,13 @@
       [
         {
           "contract_data": {
-            "contract": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H",
-            "key": "ledger_key_contract_instance",
-            "durability": "persistent"
+            "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM",
+            "key": {
+              "ledger_key_nonce": {
+                "nonce": 801925984706572462
+              }
+            },
+            "durability": "temporary"
           }
         },
         [
@@ -210,275 +188,19 @@
             "data": {
               "contract_data": {
                 "ext": "v0",
-                "contract": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H",
-                "key": "ledger_key_contract_instance",
-                "durability": "persistent",
-                "val": {
-                  "contract_instance": {
-                    "executable": {
-                      "wasm": "4c90bdf0d4c07b4dce0721ab7898d95587c11eb17a580c75d35e2e889e092ba2"
-                    },
-                    "storage": [
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "FeeState"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "symbol": "baseline_fee_bps"
-                              },
-                              "val": {
-                                "u32": 30
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "cooldown_divisor"
-                              },
-                              "val": {
-                                "u32": 2
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "decay_threshold_blocks"
-                              },
-                              "val": {
-                                "u64": 100
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "ema_alpha"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 10000000000000
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "last_fee_update"
-                              },
-                              "val": {
-                                "u64": 0
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "max_fee_bps"
-                              },
-                              "val": {
-                                "u32": 100
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "min_fee_bps"
-                              },
-                              "val": {
-                                "u32": 10
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "ramp_up_multiplier"
-                              },
-                              "val": {
-                                "u32": 2
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "vol_accumulator"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "Guard"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "symbol": "locked"
-                              },
-                              "val": {
-                                "bool": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "PairState"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "symbol": "block_timestamp_last"
-                              },
-                              "val": {
-                                "u64": 0
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "factory"
-                              },
-                              "val": {
-                                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "k_last"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "lp_token"
-                              },
-                              "val": {
-                                "address": "CD64OC2FGEGRDSEYUFMODTU7WMLVYHBNXBF4MKGLVAPIVBLGA5KBB3XP"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "price_a_cumulative"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "price_b_cumulative"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "reserve_a"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "reserve_b"
-                              },
-                              "val": {
-                                "i128": {
-                                  "hi": 0,
-                                  "lo": 0
-                                }
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "token_a"
-                              },
-                              "val": {
-                                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "token_b"
-                              },
-                              "val": {
-                                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
-                              }
-                            }
-                          ]
-                        }
-                      }
-                    ]
+                "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM",
+                "key": {
+                  "ledger_key_nonce": {
+                    "nonce": 801925984706572462
                   }
-                }
+                },
+                "durability": "temporary",
+                "val": "void"
               }
             },
             "ext": "v0"
           },
-          120960
-        ]
-      ],
-      [
-        {
-          "contract_data": {
-            "contract": "CD64OC2FGEGRDSEYUFMODTU7WMLVYHBNXBF4MKGLVAPIVBLGA5KBB3XP",
-            "key": "ledger_key_contract_instance",
-            "durability": "persistent"
-          }
-        },
-        [
-          {
-            "last_modified_ledger_seq": 0,
-            "data": {
-              "contract_data": {
-                "ext": "v0",
-                "contract": "CD64OC2FGEGRDSEYUFMODTU7WMLVYHBNXBF4MKGLVAPIVBLGA5KBB3XP",
-                "key": "ledger_key_contract_instance",
-                "durability": "persistent",
-                "val": {
-                  "contract_instance": {
-                    "executable": {
-                      "wasm": "d5cecfc995c3aee14879fdd05cd32ef68d7620609ea44e53b41f93aa0e7115ab"
-                    },
-                    "storage": null
-                  }
-                }
-              }
-            },
-            "ext": "v0"
-          },
-          4095
+          6311999
         ]
       ],
       [
@@ -516,7 +238,7 @@
             },
             "ext": "v0"
           },
-          120960
+          4095
         ]
       ],
       [
@@ -666,79 +388,22 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "create_pair"
+                "symbol": "set_fee_to"
               }
             ],
             "data": {
               "vec": [
                 {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                 },
                 {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
+                },
+                {
+                  "u32": 20
                 }
               ]
             }
-          }
-        }
-      },
-      "failed_call": false
-    },
-    {
-      "event": {
-        "ext": "v0",
-        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
-        "type_": "diagnostic",
-        "body": {
-          "v0": {
-            "topics": [
-              {
-                "symbol": "fn_call"
-              },
-              {
-                "bytes": "41978a80c8e8ab539b0a1c66fcb35c5861735fccc8e923c1fbb56604b4de7f63"
-              },
-              {
-                "symbol": "initialize"
-              }
-            ],
-            "data": {
-              "vec": [
-                {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
-                },
-                {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-                },
-                {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
-                },
-                {
-                  "address": "CD64OC2FGEGRDSEYUFMODTU7WMLVYHBNXBF4MKGLVAPIVBLGA5KBB3XP"
-                }
-              ]
-            }
-          }
-        }
-      },
-      "failed_call": false
-    },
-    {
-      "event": {
-        "ext": "v0",
-        "contract_id": "41978a80c8e8ab539b0a1c66fcb35c5861735fccc8e923c1fbb56604b4de7f63",
-        "type_": "diagnostic",
-        "body": {
-          "v0": {
-            "topics": [
-              {
-                "symbol": "fn_return"
-              },
-              {
-                "symbol": "initialize"
-              }
-            ],
-            "data": "void"
           }
         }
       },
@@ -753,22 +418,39 @@
           "v0": {
             "topics": [
               {
-                "symbol": "created"
-              },
+                "symbol": "fee_to"
+              }
+            ],
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "contract",
+        "body": {
+          "v0": {
+            "topics": [
               {
-                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-              },
-              {
-                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
+                "symbol": "fee_upd"
               }
             ],
             "data": {
               "vec": [
                 {
-                  "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
+                  "u32": 0
                 },
                 {
-                  "u32": 0
+                  "u32": 20
+                },
+                {
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
                 }
               ]
             }
@@ -789,12 +471,10 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "create_pair"
+                "symbol": "set_fee_to"
               }
             ],
-            "data": {
-              "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
-            }
+            "data": "void"
           }
         }
       },
@@ -815,19 +495,10 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "get_pair"
+                "symbol": "fee_to"
               }
             ],
-            "data": {
-              "vec": [
-                {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
-                },
-                {
-                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
-                }
-              ]
-            }
+            "data": "void"
           }
         }
       },
@@ -845,11 +516,11 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "get_pair"
+                "symbol": "fee_to"
               }
             ],
             "data": {
-              "address": "CBAZPCUAZDUKWU43BIOGN7FTLRMGC427ZTEOSI6B7O2WMBFU3Z7WGF2H"
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARQG5"
             }
           }
         }

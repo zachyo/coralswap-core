@@ -1,9 +1,11 @@
 {
   "generators": {
-    "address": 5,
+    "address": 1,
     "nonce": 0
   },
-  "auth": [],
+  "auth": [
+    []
+  ],
   "ledger": {
     "protocol_version": 21,
     "sequence_number": 0,
@@ -36,7 +38,49 @@
                     "executable": {
                       "wasm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
                     },
-                    "storage": null
+                    "storage": [
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "OracleState"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "map": [
+                            {
+                              "key": {
+                                "symbol": "observations"
+                              },
+                              "val": {
+                                "vec": [
+                                  {
+                                    "vec": [
+                                      {
+                                        "u64": 0
+                                      },
+                                      {
+                                        "i128": {
+                                          "hi": 0,
+                                          "lo": 20
+                                        }
+                                      },
+                                      {
+                                        "i128": {
+                                          "hi": 0,
+                                          "lo": 0
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
                   }
                 }
               }

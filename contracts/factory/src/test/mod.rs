@@ -212,7 +212,7 @@ mod factory_tests {
 
     #[test]
     fn test_propose_upgrade_stores_proposal() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let new_hash = env.deployer().upload_contract_wasm(Bytes::new(&env));
         let signers = Vec::from_array(&env, [Address::generate(&env), Address::generate(&env)]);
         client.propose_upgrade(&signers, &new_hash);
@@ -220,7 +220,7 @@ mod factory_tests {
 
     #[test]
     fn test_propose_upgrade_duplicate_rejected() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let new_hash = env.deployer().upload_contract_wasm(Bytes::new(&env));
         let signers = Vec::from_array(&env, [Address::generate(&env), Address::generate(&env)]);
         client.propose_upgrade(&signers, &new_hash);
@@ -230,7 +230,7 @@ mod factory_tests {
 
     #[test]
     fn test_execute_upgrade_too_early_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let new_hash = env.deployer().upload_contract_wasm(Bytes::new(&env));
         let signers = Vec::from_array(&env, [Address::generate(&env), Address::generate(&env)]);
         client.propose_upgrade(&signers, &new_hash);
@@ -240,7 +240,7 @@ mod factory_tests {
 
     #[test]
     fn test_cancel_upgrade_clears_proposal() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let new_hash = env.deployer().upload_contract_wasm(Bytes::new(&env));
         let signers = Vec::from_array(&env, [Address::generate(&env), Address::generate(&env)]);
         client.propose_upgrade(&signers, &new_hash);
@@ -251,7 +251,7 @@ mod factory_tests {
 
     #[test]
     fn test_cancel_upgrade_no_proposal_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let signers = Vec::from_array(&env, [Address::generate(&env), Address::generate(&env)]);
         let result = client.try_cancel_upgrade(&signers);
         assert!(result.is_err());
@@ -438,7 +438,7 @@ mod factory_tests {
 
     #[test]
     fn test_pause_authorized_signers_succeeds() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         // setup_env initialises with 3 signers and mock_all_auths, so any
         // address passes require_auth(). Threshold = ceil(3/2) = 2.
         let s1 = Address::generate(&env);
@@ -449,7 +449,7 @@ mod factory_tests {
 
     #[test]
     fn test_unpause_authorized_signers_succeeds() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
         let s1 = Address::generate(&env);
         let s2 = Address::generate(&env);
         client.pause(&Vec::from_array(&env, [s1.clone(), s2.clone()]));
@@ -515,7 +515,7 @@ mod factory_tests {
         let (env, client, _, _, _, fee_to_setter, _) = setup_env();
 
         let fee_recipient = Address::generate(&env);
-        client.set_fee_to(&fee_to_setter, &Some(fee_recipient.clone()));
+        client.set_fee_to(&fee_to_setter, &Some(fee_recipient.clone()), &10u32);
         assert_eq!(client.fee_to(), Some(fee_recipient));
     }
 
@@ -525,7 +525,7 @@ mod factory_tests {
 
         let rando = Address::generate(&env);
         let fee_recipient = Address::generate(&env);
-        let result = client.try_set_fee_to(&rando, &Some(fee_recipient));
+        let result = client.try_set_fee_to(&rando, &Some(fee_recipient), &10u32);
         assert!(result.is_err());
     }
 
@@ -542,7 +542,7 @@ mod factory_tests {
 
     #[test]
     fn test_pause_with_unknown_signer_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
 
         // A freshly-generated address is guaranteed not to be in the stored
         // signers list — the call must be rejected with Unauthorized.
@@ -553,7 +553,7 @@ mod factory_tests {
 
     #[test]
     fn test_unpause_with_unknown_signer_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
 
         let unknown = Address::generate(&env);
         let result = client.try_unpause(&Vec::from_array(&env, [unknown]));
@@ -562,7 +562,7 @@ mod factory_tests {
 
     #[test]
     fn test_pause_with_empty_signers_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
 
         let result = client.try_pause(&Vec::new(&env));
         assert!(result.is_err(), "empty signers list must be rejected by pause");
@@ -570,9 +570,83 @@ mod factory_tests {
 
     #[test]
     fn test_unpause_with_empty_signers_fails() {
-        let (env, client, _, _, _, _) = setup_env();
+        let (env, client, _, _, _, _, _) = setup_env();
 
         let result = client.try_unpause(&Vec::new(&env));
         assert!(result.is_err(), "empty signers list must be rejected by unpause");
+    }
+
+    // ── Issue #110: get_all_pairs / get_pair_count ───────────────────────────
+
+    #[test]
+    fn test_get_pair_count_initially_zero() {
+        let (_env, client, _, _, _, _, _) = setup_env();
+        assert_eq!(client.get_pair_count(), 0);
+    }
+
+    #[test]
+    fn test_get_all_pairs_empty_list() {
+        let (env, client, _, _, _, _, _) = setup_env();
+        let result = client.get_all_pairs(&0, &10);
+        assert!(result.is_empty());
+    }
+
+    #[test]
+    fn test_get_all_pairs_over_limit_returns_error() {
+        let (env, client, _, _, _, _, _) = setup_env();
+        let result = client.try_get_all_pairs(&0, &51);
+        assert!(result.is_err(), "limit > 50 must return an error");
+    }
+
+    #[test]
+    fn test_get_all_pairs_returns_pairs_and_paginates() {
+        let (env, client, token_a, token_b, _, _, _) = setup_env();
+        let token_c = Address::generate(&env);
+
+        let pair1 = client.create_pair(&token_a, &token_b);
+        let pair2 = client.create_pair(&token_a, &token_c);
+
+        assert_eq!(client.get_pair_count(), 2);
+
+        let all = client.get_all_pairs(&0, &10);
+        assert_eq!(all.len(), 2);
+        assert!(all.contains(&pair1));
+        assert!(all.contains(&pair2));
+
+        // Paginate: offset=1 limit=1 → only second pair
+        let page = client.get_all_pairs(&1, &1);
+        assert_eq!(page.len(), 1);
+
+        // Offset beyond total → empty
+        let overflow = client.get_all_pairs(&100, &10);
+        assert!(overflow.is_empty());
+    }
+
+    // ── Issue #111: set_fee_to with fee_bps validation ───────────────────────
+
+    #[test]
+    fn test_set_fee_to_fee_too_high_returns_error() {
+        let (env, client, _, _, _, fee_to_setter, _) = setup_env();
+        let fee_recipient = Address::generate(&env);
+        let result = client.try_set_fee_to(&fee_to_setter, &Some(fee_recipient), &31u32);
+        assert!(result.is_err(), "fee_bps > 30 must return an error");
+    }
+
+    #[test]
+    fn test_set_fee_to_zero_address_with_nonzero_fee_returns_error() {
+        let (env, client, _, _, _, fee_to_setter, _) = setup_env();
+        // Passing None recipient but nonzero fee must fail
+        let result = client.try_set_fee_to(&fee_to_setter, &None, &10u32);
+        assert!(result.is_err(), "None fee_to with nonzero fee_bps must return an error");
+    }
+
+    #[test]
+    fn test_set_fee_to_valid_update_emits_event() {
+        let (env, client, _, _, _, fee_to_setter, _) = setup_env();
+        let fee_recipient = Address::generate(&env);
+        // valid: fee_bps = 20 (≤ 30), recipient set
+        let result = client.try_set_fee_to(&fee_to_setter, &Some(fee_recipient.clone()), &20u32);
+        assert!(result.is_ok(), "valid fee update must succeed");
+        assert_eq!(client.fee_to(), Some(fee_recipient));
     }
 }

@@ -24,3 +24,11 @@ pub enum PairError {
     FlashCallbackFailed = 117,
     FlashLoanFeeTooHigh = 118,
 }
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[repr(u32)]
+pub enum OracleError {
+    WindowTooShort = 200,
+    WindowTooLong = 201,
+}
